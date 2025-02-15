@@ -1,0 +1,60 @@
+<template>
+    <!-- Main card to hold the content -->
+    <lightning-card title="Mass Update Leads" icon-name="standard:lead">
+        <!-- Conditionally render the form only if valid leads exist -->
+        <template lwc:if={validLeadExists}>
+            <div class="slds-p-around_medium">
+                <!-- Iterate over the list of lead IDs and render forms for each -->
+                <template for:each={leadIds} for:item="leadId">
+                    <div class="slds-m-around_medium" key={leadId}>
+                        <!-- Lightning record edit form for updating a lead record -->
+                        <lightning-record-edit-form object-api-name="Lead" record-id={leadId} data-id={leadId}>
+                            <!-- Layout container for fields -->
+                            <lightning-layout multiple-rows>
+                                <!-- Layout item for First Name field -->
+                                <lightning-layout-item size="12" large-device-size="2" padding="around-small">
+                                    <lightning-input-field field-name="FirstName" variant="label-stacked" required>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+                                <!-- Layout item for Last Name field -->
+                                <lightning-layout-item size="12" large-device-size="2" padding="around-small">
+                                    <lightning-input-field field-name="LastName" variant="label-stacked" required>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+                                <!-- Layout item for Mobile Phone field -->
+                                <lightning-layout-item size="12" large-device-size="2" padding="around-small">
+                                    <lightning-input-field field-name="Company" variant="label-stacked" required>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+                                <!-- Container for displaying error or success messages -->
+                                <lightning-layout-item size="12" large-device-size="2" padding="around-small">
+                                    <lightning-messages> </lightning-messages>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-record-edit-form>
+                    </div>
+                </template>
+                <!-- Buttons for Cancel and Update All actions -->
+                <div style="text-align: center;">
+                    <!-- Cancel button to navigate back to the list view -->
+                    <lightning-button class="slds-m-top_medium" label="Cancel" variant="brand"
+                        onclick={redirectToListView}></lightning-button>
+                    &nbsp;
+                    <!-- Update All button to submit all forms -->
+                    <lightning-button class="slds-m-top_medium" label="Update All" variant="brand"
+                        onclick={handleUpdateAll}></lightning-button>
+                </div>
+            </div>
+        </template>
+        <!-- Render message and button if no valid lead are found -->
+        <template lwc:else>
+            <!-- Display no eligible records message -->
+            &nbsp;&nbsp; No eligible records.
+            <div style="text-align: center;">
+                <!-- Button to return to the list view -->
+                <lightning-button class="slds-m-top_medium" label="Return to list view" variant="brand"
+                    onclick={redirectToListView}></lightning-button>
+            </div>
+        </template>
+    </lightning-card>
+</template>
