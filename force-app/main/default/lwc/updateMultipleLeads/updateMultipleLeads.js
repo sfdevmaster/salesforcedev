@@ -6,14 +6,14 @@ import { CurrentPageReference } from "lightning/navigation";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 // NavigationMixin to enable navigation in Salesforce Lightning
 import { NavigationMixin } from "lightning/navigation";
- 
+
 export default class UpdateMultipleLeads extends NavigationMixin(LightningElement) {
- 
+
     // Holds the array of selected lead record IDs
     leadIds = [];
     // Boolean to check if valid leads exist
     validLeadExists;
- 
+
     // Wire method to get current page state parameters
     @wire(CurrentPageReference)
     getStateParameters(currentPageReference) {
@@ -28,7 +28,7 @@ export default class UpdateMultipleLeads extends NavigationMixin(LightningElemen
             }
         }
     }
- 
+
     /**
      * Utility method to show toast notifications
      * @param {string} title - Title of the toast
@@ -44,7 +44,7 @@ export default class UpdateMultipleLeads extends NavigationMixin(LightningElemen
         // Dispatch the toast event
         this.dispatchEvent(evt);
     }
- 
+
     /**
      * Redirects user to the Lead list view
      */
@@ -64,7 +64,7 @@ export default class UpdateMultipleLeads extends NavigationMixin(LightningElemen
             },
         });
     }
- 
+
     /**
      * Handles the submission of updates for multiple lead records
      */
@@ -74,7 +74,7 @@ export default class UpdateMultipleLeads extends NavigationMixin(LightningElemen
         const forms = this.template.querySelectorAll("lightning-record-edit-form");
         // Array to hold promises for form submissions
         const updatePromises = [];
- 
+
         // Iterate over each form and create a Promise for its submission
         forms.forEach((form) => {
             const promise = new Promise((resolve, reject) => {
@@ -87,7 +87,7 @@ export default class UpdateMultipleLeads extends NavigationMixin(LightningElemen
             });
             updatePromises.push(promise); // Add the promise to the array
         });
- 
+
         // Wait for all forms to complete submission (success or failure)
         Promise.allSettled(updatePromises).then((results) => {
             const errors = results
@@ -95,10 +95,10 @@ export default class UpdateMultipleLeads extends NavigationMixin(LightningElemen
                 .filter((result) => result.status === "rejected")
                 // Collect error messages
                 .map((result) => result.reason);
- 
+
             // Count successful updates
             const successCount = results.filter((result) => result.status === "fulfilled").length;
- 
+
             if (errors.length > 0) {
                 // Show a partial success toast if there are errors
                 this.showToast(
