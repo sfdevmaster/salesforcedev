@@ -1,0 +1,42 @@
+<template>
+    <lightning-card title="Server Side Lazy Loading In HTML Table With Scroll Bar - LWC" icon-name="standard:account">
+        <div class="container slds-m-around_medium">
+            <div class="slds-m-bottom_small" style="padding-left: 25px">
+                <p class="slds-m-bottom_small">
+                    <lightning-badge label={accounts.length}></lightning-badge> accounts
+                    loaded
+                </p>
+            </div>
+            <div class="scrollable" onscroll={handleScroll}>
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered">
+                    <thead>
+                        <tr class="slds-text-title_caps">
+                            <th scope="col"></th>
+                            <th scope="col">Account Name</th>
+                            <th scope="col">Industry</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={accounts} for:item="account">
+                            <tr key={account.Id}>
+                                <td>{account.serialNumber}</td>
+                                <td>{account.Name}</td>
+                                <td>{account.Industry}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Loading Spinner -->
+            <div if:true={isLoading} class="loading-spinner slds-m-around_medium">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                <p>Loading accounts...</p>
+            </div>
+            <br />
+            <br />
+            <br />
+            <!-- Back to Top Button -->
+            <button class="back-to-top" onclick={scrollToTop}>↑ Top</button>
+        </div>
+    </lightning-card>
+</template>

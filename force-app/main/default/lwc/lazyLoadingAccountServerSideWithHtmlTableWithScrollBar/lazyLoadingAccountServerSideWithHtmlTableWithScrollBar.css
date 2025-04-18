@@ -1,0 +1,36 @@
+.scrollable {
+    overflow-y: auto;
+    border: 1px solid #d8dde6;
+    padding: 0.5rem;
+}
+.slds-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: rgba(238, 238, 238, 1);
+    z-index: 1;
+}
+
+.back-to-top {
+    display: none;
+    position: absolute; /* Absolute positioning within the .scrollable container */
+    bottom: 10px;
+    right: 10px;
+    padding: 0.75rem 1rem;
+    background: #0176d3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    z-index: 10; /* Ensures it is above other content */
+}
+
+.back-to-top:hover {
+    background: #0160a9;
+}
+
+.loading-spinner {
+    text-align: center;
+    color: #706e6b;
+}
