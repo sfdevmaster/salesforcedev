@@ -1,0 +1,52 @@
+<!--serverSideLazyLoadingInHtmlTableWithScrollBar.html-->
+<template>
+    <lightning-card title="Server Side Lazy Loading In HTML Table With Load More Button - LWC" icon-name="standard:contact">
+        <div class="container slds-m-around_medium">
+            <div class="slds-m-bottom_small" style="padding-left: 25px">
+                <p class="slds-m-bottom_small">
+                    <lightning-badge label={contacts.length}></lightning-badge> contacts loaded
+                </p>
+            </div>
+            <div class="scrollable">
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered">
+                    <thead>
+                        <tr class="slds-text-title_caps">
+                                <th scope="col"></th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Email</th>
+                            </tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={contacts} for:item="contact">
+                            <tr key={contact.Id}>
+                                <td>{contact.serialNumber}</td>
+                                <td>{contact.FirstName}</td>
+                                <td>{contact.LastName}</td>
+                                <td>{contact.Email}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Loading Spinner -->
+            <div if:true={isLoading} class="loading-spinner slds-m-around_medium">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                <p>Loading contacts...</p>
+            </div>
+            <!-- Load More Button -->
+            <div if:false={isLoading} class="button-container" style="text-align: center;padding-top: 10px;">
+                <button if:false={allLoaded} class="slds-button slds-button_neutral" onclick={handleLoadMore}
+                    aria-label="Load more contacts">Load More</button>
+                <div if:true={allLoaded} class="all-loaded">
+                    All contacts loaded
+                </div>
+            </div>
+            <br />
+            <br />
+            <!-- Back to Top Button -->
+            <button class="back-to-top" onclick={scrollToTop}>↑ Top</button>
+        </div>
+    </lightning-card>
+</template>

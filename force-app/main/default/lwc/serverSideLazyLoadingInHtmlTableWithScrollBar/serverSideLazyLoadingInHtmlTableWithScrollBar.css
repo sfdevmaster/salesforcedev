@@ -1,3 +1,4 @@
+/*serverSideLazyLoadingInHtmlTableWithScrollBar.css*/
 .scrollable {
     overflow-y: auto;
     border: 1px solid #d8dde6;
@@ -35,4 +36,10 @@
 .loading-spinner {
     text-align: center;
     color: #706e6b;
+}
+
+.all-loaded {
+    color: #28a745;
+    padding: 0.5rem;
+    font-weight: bold;
 }
