@@ -2,7 +2,7 @@
 // Import necessary LWC modules and decorators
 import { LightningElement } from "lwc";
 // Import Apex method for retrieving account data
-import getAccounts from "@salesforce/apex/LazyLoadingAccountController.getAccounts";
+import getAccounts from "@salesforce/apex/LazyLoadingAccountController.getAccountsData";
 
 // Define the columns for the datatable
 const columns = [
