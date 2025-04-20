@@ -1,0 +1,36 @@
+/*serverSideLazyLoadingInDataTableWithScrollBar.css*/
+.container {
+    padding: 0.5rem;
+}
+.table-container {
+    border: 1px solid #d8dde6;
+    background-color: #fff !important;
+    overflow-y: auto;
+    min-height: 90px;
+}
+.scrollable-table {
+    height: fit-content;
+}
+.all-loaded {
+    color: #28a745;
+    padding: 0.5rem;
+    font-weight: bold;
+}
+.back-to-top {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 0.75rem 1rem;
+    background: #0176d3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    z-index: 10;
+}
+.back-to-top:hover {
+    background: #0160a9;
+}

@@ -1,0 +1,28 @@
+<!--serverSideLazyLoadingInDataTableWithScrollBar.html-->
+<template>
+    <lightning-card title="Server Side Lazy Loading In DataTable With Scroll Bar - LWC" icon-name="standard:account">
+        <div class="container slds-m-around_medium">
+            <div class="slds-m-bottom_small" style="padding-left: 25px">
+                <p class="slds-m-bottom_small">
+                    <lightning-badge label={accounts.length}></lightning-badge> accounts loaded
+                </p>
+            </div>
+            <div class="table-container">
+                <lightning-datatable columns={columns} data={accounts} key-field="id"
+                    enable-infinite-loading={hasMoreRecords} onloadmore={loadMoreData} hide-checkbox-column
+                    show-row-number-column>
+                </lightning-datatable>
+            </div>
+           
+        </div>
+         <!-- Load More Button -->
+         <div slot="footer" if:true={isLoading} class="button-container" style="text-align: center;padding-top: 10px;">
+            {loadMoreStatus}
+        </div>
+        <div if:false={isLoading} class="button-container" style="text-align: center;padding-top: 10px;">
+            <div if:true={allLoaded} class="all-loaded">
+                All accounts loaded
+            </div>
+        </div>
+    </lightning-card>
+</template>
