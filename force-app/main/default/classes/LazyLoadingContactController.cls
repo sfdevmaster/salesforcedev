@@ -1,6 +1,6 @@
-// LazyLoadingContactController.apex
+//LazyLoadingContactController.apex
 public class LazyLoadingContactController {
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<Contact> getContactsData(Integer limitSize, Integer offset) {
         return [
             SELECT Id, FirstName,LastName, Email
@@ -9,5 +9,12 @@ public class LazyLoadingContactController {
             LIMIT :limitSize 
             OFFSET :offset
         ];
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Contact> getAllContacts() {
+        return [
+            SELECT Id, FirstName,LastName, Email
+            FROM Contact WHERE Name Like 'E%' LIMIT 1000];
     }
 }

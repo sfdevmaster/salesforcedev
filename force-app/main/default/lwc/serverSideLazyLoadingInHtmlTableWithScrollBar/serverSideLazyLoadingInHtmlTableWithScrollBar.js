@@ -18,15 +18,25 @@ export default class ServerSideLazyLoadingInHtmlTableWithScrollBar extends Light
     hasMoreRecords = true;
 
     /**
-     * Lifecycle hook invoked when the component is inserted into the DOM.
+     * @description - connectedCallback lifecycle hook invoked when the component is inserted into the DOM.
      * Calls the method to load the initial data.
      */
     connectedCallback() {
+        // Load initial data when the component is initialized
         this.loadInitialData();
     }
 
     /**
-     * loadInitialData method fetches contact data from the server.
+     * @description - renderedCallback lifecycle hook invoked after the component has been rendered.
+     * Calls the method to set the scrollable height.
+     */
+    renderedCallback() {
+        // set the scrollable height after the component is rendered
+        this.setScrollableHeight();
+    }
+
+    /**
+     * @description - loadInitialData method fetches contact data from the server.
      * Prevents additional calls if no more records or already loading.
      * Handles server response and updates component state.
      * @param {NA} - No parameters are accepted by this method.
@@ -76,7 +86,7 @@ export default class ServerSideLazyLoadingInHtmlTableWithScrollBar extends Light
     }
 
     /**
-     * loadingDelay method simulates a delay for data fetching.
+     * @description - loadingDelay method simulates a delay for data fetching.
      * @param {NA} - No parameters are accepted by this method.
      * @return {Promise} - Resolves after 1 second
      */
@@ -87,12 +97,13 @@ export default class ServerSideLazyLoadingInHtmlTableWithScrollBar extends Light
     }
 
     /**
-     * loadMoreData method triggers loading of the next set of data.
+     * @description - loadMoreData method triggers loading of the next set of data.
      * Simply calls loadInitialData for consistency.
      * @param {NA} - No parameters are accepted by this method.
      * @return {void} - This method does not return any value.
      */
     async loadMoreData() {
+        // Call the loadInitialData method to load more data
         this.loadInitialData();
     }
 
@@ -106,7 +117,7 @@ export default class ServerSideLazyLoadingInHtmlTableWithScrollBar extends Light
     }
 
     /**
-     * processcontacts method processes the fetched contacts.
+     * @description - processcontacts method processes the fetched contacts.
      * Adds a serial number to each contact for display purposes.
      * @param {Array} contacts - Array of contact records
      * @param {number} currentLength - Current number of records
@@ -122,41 +133,53 @@ export default class ServerSideLazyLoadingInHtmlTableWithScrollBar extends Light
     }
 
     /**
-     * handleScroll method handles scroll events on the container.
+     * @description - handleScroll method handles scroll events on the container.
      * Triggers loading of more data when near the bottom of the container.
      * Shows or hides the "Back to Top" button based on scroll position.
      * @param {NA} - No parameters are accepted by this method.
      * @return {void} - This method does not return any value.
      */
     handleScroll() {
-        // Buffer in pixels to determine when to fetch more data
+        // declare a buffer to trigger loading more data before reaching the bottom
         const buffer = 10;
+        // declare a scrollable container
         const scrollableContainer = this.template.querySelector(".scrollable");
 
+        // if scrollableContainer is not found, exit the method
         if (!scrollableContainer) return;
 
-        // Destructure scroll-related properties for readability
+        // destructure scrollTop, scrollHeight, and clientHeight from the scrollableContainer
+        // scrollTop is the number of pixels that the content of an element is scrolled vertically
+        // scrollHeight is the total height of the content in the element, including content not visible
+        // clientHeight is the height of the visible content in the element
         const { scrollTop, scrollHeight, clientHeight } = scrollableContainer;
 
         // Check if the user has scrolled near the bottom of the container
         if (scrollHeight - scrollTop - clientHeight < buffer && !this.isLoading) {
+            // If the user has scrolled near the bottom, load more data
             this.loadMoreData();
         }
 
         // Show or hide the "Back to Top" button based on the scroll position
         const backToTopButton = this.template.querySelector(".back-to-top");
+
+        // If the scrollTop is greater than 20 pixels, show the button; otherwise, hide it
         backToTopButton.style.display = scrollTop > 20 ? "block" : "none";
     }
 
     /**
-     * scrollToTop method scrolls the container back to the top.
+     * @description - scrollToTop method scrolls the container back to the top.
      * Uses smooth scrolling for a better user experience.
      * @param {NA} - No parameters are accepted by this method.
      * @return {void} - This method does not return any value.
      */
     scrollToTop() {
+        // Get the scrollable container element
         const scrollableContainer = this.template.querySelector(".scrollable");
+
+        // If the scrollable container is found, scroll to the top smoothly
         if (scrollableContainer) {
+            // Scroll to the top of the scrollable container
             scrollableContainer.scrollTo({
                 top: 0,
                 behavior: "smooth"
@@ -167,20 +190,41 @@ export default class ServerSideLazyLoadingInHtmlTableWithScrollBar extends Light
     /**
      * setScrollableHeight method dynamically sets the height of the scrollable container.
      * Ensures consistent visual appearance based on the number of records.
+     * Make sure set the row height in px according to your page size.
      * @param {NA} - No parameters are accepted by this method.
      * @return {void} - This method does not return any value.
      */
     setScrollableHeight() {
+        // Get the scrollable container element
         const scrollableContainer = this.template.querySelector(".scrollable");
+
+        // If the scrollable container is not found, exit the method
         if (scrollableContainer) {
-            // Approximate height of each row in pixels
-            const rowHeight = 36;
+            // Find the first table row to measure its height
+            const firstRow = scrollableContainer.querySelector("tbody tr");
 
-            // Total height calculated based on the number of records per page
-            const calculatedHeight = this.pageSize * rowHeight;
+            // If the first row is found, calculate the height of the scrollable container
+            if (firstRow) {
+                // Set the row height based on the page size
+                let rowHeight = 36;
+                // If the page size is less than 9, set a specific height
+                if (this.pageSize < 9) {
+                    // Add a small offset to the row height for better spacing
+                    rowHeight = firstRow.getBoundingClientRect().height + 4.8;
+                } else if (this.pageSize < 12) {
+                    // If the page size is less than 12, set a different height
+                    rowHeight = 31;
+                } else {
+                    // For larger page sizes, set a standard height
+                    rowHeight = 30;
+                }
 
-            // Set the height of the scrollable container dynamically
-            scrollableContainer.style.height = `${calculatedHeight}px`;
+                // Calculate the total height of the scrollable container based on the page size and row height
+                const calculatedHeight = this.pageSize * rowHeight;
+
+                // Set the height of the scrollable container dynamically
+                scrollableContainer.style.height = `${calculatedHeight}px`;
+            }
         }
     }
 }
